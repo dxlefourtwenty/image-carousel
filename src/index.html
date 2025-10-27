@@ -7,6 +7,55 @@
     <script src="./index.js" defer></script>
 </head>
 <body>
-    <div id="test" class="text-3xl font-extrabold underline">Hello There, if this is styled then tailwind build has worked</div>
+    <div id="container" class="flex flex-col items-center justify-center pt-25">
+      <div class="text-4xl font-bold pb-3">Some Sights to See</div>
+      <div class="flex">
+        <button id="left-arrow" class="pr-4 text-5xl cursor-pointer"><</button>
+        <div class="overflow-hidden w-[400px] h-[350px] border-4 border-amber-400">
+          <div id="carousel" class="flex transition-transform duration-500 ease-in-out w-full h-full">
+              <img src="./images/stock-1.jpg" class="flex-shrink-0" alt="Slide 1">
+              <img src="./images/stock-2.jpg" class="flex-shrink-0" alt="Slide 2">
+              <img src="./images/stock-3.jpg" class="flex-shrink-0" alt="Slide 3">
+          </div>
+        </div>
+        <button id="right-arrow" class="pl-4 text-5xl cursor-pointer">></button>
+      </div>
+
+      <!-- Carousel Dots -->
+      <div id="dots" class="mt-2">
+        <button class="w-3 h-3 rounded-full bg-gray-400 mx-1 cursor-pointer"></button>
+        <button class="w-3 h-3 rounded-full bg-gray-400 mx-1 cursor-pointer"></button>
+        <button class="w-3 h-3 rounded-full bg-gray-400 mx-1 cursor-pointer"></button>
+      </div>
+    </div>
+
+    <script>
+      const carousel = document.getElementById("carousel");
+      const slides = carousel.children;
+      const nextBtn = document.getElementById("right-arrow");
+      const prevBtn = document.getElementById("left-arrow");
+      const dots = document.querySelectorAll("#dots button");
+
+      let index = 0;
+
+      function showSlide(i) {
+        if (i < 0) { index = slides.length - 1; }
+        else if (i >= slides.length) { index = 0; }
+        else { index = i; }
+
+        // Move carousel
+        carousel.style.transform = `translateX(-${index * 100}%)`;
+
+        // Update dots
+        dots.forEach((dot, idx) => {
+          dot.classList.toggle('bg-gray-800', idx === index);
+          dot.classList.toggle('bg-gray-400', idx !== index);
+        }); 
+      }
+
+      nextBtn.addEventListener('click', () => showSlide(index + 1));
+      prevBtn.addEventListener('click', () => showSlide(index - 1));
+      dots.forEach((dot, idx) => dot.addEventListener('click', () => showSlide(idx)));
+    </script>
 </body>
 </html>
